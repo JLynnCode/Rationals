@@ -41,7 +41,6 @@ interface IRational {
 	default IRational negate() {
 
 		return construct(getNumerator() * -1, getDenominator());
-
 	}
 
 	/**
@@ -54,7 +53,12 @@ interface IRational {
 	 *             if the numerator of this rational value is 0
 	 */
 	default IRational invert() throws IllegalStateException {
-		throw new NotImplementedException();
+		
+		if(getNumerator() == 0){
+			throw new IllegalStateException();
+		}
+		
+		return construct(getDenominator(), getNumerator());
 	}
 
 	/**
@@ -69,7 +73,18 @@ interface IRational {
 	 *             if that is null
 	 */
 	default IRational add(IRational that) throws IllegalArgumentException {
-		throw new NotImplementedException();
+		if(that == null){
+			throw new IllegalArgumentException();
+		}
+		int n1 = this.getNumerator();
+		int n2 = that.getNumerator();
+		int d1 = this.getDenominator();
+		int d2 = that.getDenominator();
+		
+		int sumN = ((n1 * d2) + (n2 * d1));
+		int sumD = (d1 * d2);
+		
+		return construct(sumN, sumD);
 	}
 
 	/**
@@ -84,7 +99,11 @@ interface IRational {
 	 *             if that is null
 	 */
 	default IRational sub(IRational that) throws IllegalArgumentException {
-		throw new NotImplementedException();
+		if(that == null){
+			throw new IllegalArgumentException();
+		}
+		
+		return construct(((this.getNumerator() * that.getDenominator()) - (that.getNumerator() * this.getDenominator())) , (this.getDenominator() * that.getDenominator()));
 	}
 
 	/**
@@ -99,7 +118,11 @@ interface IRational {
 	 *             if that is null
 	 */
 	default IRational mul(IRational that) throws IllegalArgumentException {
-		throw new NotImplementedException();
+		if(that == null){
+			throw new IllegalArgumentException();
+		}
+		
+		return construct((this.getNumerator() * that.getNumerator()) , (this.getDenominator() * that.getDenominator()));
 	}
 
 	/**
@@ -114,6 +137,10 @@ interface IRational {
 	 *             if that is null or if the numerator of that is 0
 	 */
 	default IRational div(IRational that) throws IllegalArgumentException {
-		throw new NotImplementedException();
+		if(that == null || that.getNumerator() == 0){
+			throw new IllegalArgumentException();
+		}
+		
+		return construct((this.getNumerator() * that.getDenominator()), (this.getDenominator() * that.getNumerator()));
 	}
 }
